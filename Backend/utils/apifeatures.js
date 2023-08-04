@@ -28,8 +28,6 @@ class ApiFeatures {
 
     removeFileds.forEach((key) => delete queryCopy[key]);
 
-    // console.log(queryCopy);
-
     //filter for price limit
     let queryStr = JSON.stringify(queryCopy);
     queryStr = queryStr.replace(/\b(gt|gte|lt|lte)\b/g, (key) => `$${key}`);
