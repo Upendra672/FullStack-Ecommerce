@@ -20,6 +20,8 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please ente the password"],
     minLength: [8, "Password should be greater than 8 characters"],
+    select: false,
+
   },
   avatar: {
     public_id: {

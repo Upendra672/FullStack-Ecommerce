@@ -1,11 +1,11 @@
 const Product = require("../models/productModel")
 const ErrorHandler = require("../utils/errorhandler")
-const CatchErrorHandler = require("../middleware/catchAsyncError")
+const catchAsyncErrors = require("../middleware/catchAsyncError")
 const ApiFeatures = require("../utils/apifeatures")
 
 
 //Create Product- Admin
-exports.createProduct = CatchErrorHandler(async (req, res, next) => {
+exports.createProduct = catchAsyncErrors(async (req, res, next) => {
 
   req.body.user = req.user.id
 
@@ -18,7 +18,7 @@ exports.createProduct = CatchErrorHandler(async (req, res, next) => {
 });
 
 //Get all product
-exports.getAllProducts = CatchErrorHandler(async (req, res, next) => {
+exports.getAllProducts = catchAsyncErrors(async (req, res, next) => {
 
   const resultPerPage = 5;
   const productCount = await Product.countDocuments();
@@ -32,7 +32,7 @@ exports.getAllProducts = CatchErrorHandler(async (req, res, next) => {
 });
 
 //Get single product details
-exports.getProductDetails = CatchErrorHandler(async (req, res, next) => {
+exports.getProductDetails = catchAsyncErrors(async (req, res, next) => {
   const product = await Product.findById(req.params.id);
 
   if (!product) {
@@ -53,7 +53,7 @@ exports.getProductDetails = CatchErrorHandler(async (req, res, next) => {
 });
 
 //Update Products - Admin
-exports.updateProduct = CatchErrorHandler(async (req, res,next) => {
+exports.updateProduct = catchAsyncErrors(async (req, res,next) => {
   let product = await Product.findById(req.params.id);
   if (!product) {
     return next(new ErrorHandler("Product Not found",404))
@@ -72,7 +72,7 @@ exports.updateProduct = CatchErrorHandler(async (req, res,next) => {
 });
 
 //Delete product
-exports.deleteProduct = CatchErrorHandler(async (req, res,next) => {
+exports.deleteProduct = catchAsyncErrors(async (req, res,next) => {
   const product = await Product.findById(req.params.id);
 
   if (!product) {
@@ -93,7 +93,7 @@ exports.deleteProduct = CatchErrorHandler(async (req, res,next) => {
 
 //simple get all products without search and filter function
 //Get all product
-// exports.getAllProducts = CatchErrorHandler(async (req, res, next) => {
+// exports.getAllProducts = catchAsyncErrors(async (req, res, next) => {
 //   const products = await Product.find();
 //   res.status(200).json({
 //     success: true,
