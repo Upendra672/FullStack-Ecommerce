@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
-const bcrypt = require("bcryptjs");
+const bcrypt = require('bcryptjs');
 const jwt = require("jsonwebtoken");
 const crypto = require('crypto');
 
@@ -62,10 +62,11 @@ userSchema.methods.getJWTTOKEN = function () {
   });
 };
 
-// compare password
-userSchema.methods.comparePassword = async function (enteredPassword) {
-  return await bcrypt.compare(enteredPassword, this.password);
+//compare password
+userSchema.methods.comparePassword = async function (password) {
+  return await bcrypt.compare(password, this.password);
 };
+
 
 //generating password reset token
 userSchema.methods.getResetPasswordToken = function () {
