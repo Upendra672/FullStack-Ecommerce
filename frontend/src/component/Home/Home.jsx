@@ -1,19 +1,30 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { CgMouse } from "react-icons/cg";
 import "./Home.css";
-import ProductCard from "./ProductCard.jsx";
+import ProductCard from "./ProductCard";
 import MetaData from "../layout/MetaData";
-
-const Product = {
-  name: "Blue T-shirt",
-  image: { url: "http://i.ibb.co/DRST11n/1.webp" },
-  price: 400,
-  _id: "upen",
-};
+import { clearErrors, getProduct } from "../../actions/productAction";
+import { useSelector, useDispatch } from "react-redux";
+import { toast } from "react-hot-toast";
+import Loader from "../layout/Loader/Loader";
 
 const Home = () => {
+  const dispatch = useDispatch();
+  const { loading, error, products } = useSelector((state) => state.products);
+
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      dispatch(clearErrors());
+    }
+    dispatch(getProduct());
+  }, [dispatch, error]);
+
   return (
     <>
+      {loading ? (<Loader/>):(
+        <>
       <MetaData title="ECOMMERCE" />
       <div className="banner">
         <p>Welcome to Ecommerce</p>
@@ -29,21 +40,16 @@ const Home = () => {
       <h2 className="homeHeading">Featured Products</h2>
 
       <div className="container" id="container">
-        <ProductCard product={Product} />
-        <ProductCard product={Product} />
-        <ProductCard product={Product} />
-        <ProductCard product={Product} />
-        <ProductCard product={Product} />
-        <ProductCard product={Product} />
-        <ProductCard product={Product} />
-        <ProductCard product={Product} />
+        {products &&
+              products.map((product) => (
+                <ProductCard key={product._id} product={product} />
+              ))}
       </div>
+    </>
+      )}
     </>
   );
 };
 
 export default Home;
-// {products &&
-//           products.map((product) => (
-//             <ProductCard key={product._id} product={product} />
-//           ))}
+
