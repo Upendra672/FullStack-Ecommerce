@@ -4,12 +4,14 @@ import { useSelector, useDispatch } from "react-redux";
 import { clearErrors, getProduct } from "../../actions/productAction";
 import Loader from "../layout/Loader/Loader";
 import ProductCard from "../Home/ProductCard";
-// import Pagination from "react-js-pagination";
-import Slider from '@mui/material/Slider';
-import Typography from '@mui/material/Typography';
+import Slider from "@mui/material/Slider";
+import Typography from "@mui/material/Typography";
 import MetaData from "../layout/MetaData";
 import { toast } from "react-hot-toast";
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from "react-router-dom";
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
+import { PaginationItem } from "@mui/material";
 
 const categories = [
   "Laptop",
@@ -21,14 +23,13 @@ const categories = [
   "SmartPhones",
 ];
 
-const Products = ({ match }) => {
+const Products = () => {
   const dispatch = useDispatch();
   const { keyword } = useParams();
 
   const [currentPage, setCurrentPage] = useState(1);
   const [price, setPrice] = useState([0, 25000]);
   const [category, setCategory] = useState("");
-
   const [ratings, setRatings] = useState(0);
 
   const {
@@ -37,19 +38,16 @@ const Products = ({ match }) => {
     error,
     productsCount,
     resultPerPage,
-    filteredProductsCount,
   } = useSelector((state) => state.products);
 
-  // const keyWord = keyword;
-
-  const setCurrentPageNo = (e) => {
-    setCurrentPage(e);
+  const setCurrentPageNo = (pageNumber) => {
+    setCurrentPage(pageNumber);
   };
 
   const priceHandler = (event, newPrice) => {
     setPrice(newPrice);
   };
-  let count = filteredProductsCount;
+  // let count = filteredProductsCount;
 
   useEffect(() => {
     if (error) {
@@ -114,24 +112,44 @@ const Products = ({ match }) => {
               />
             </fieldset>
           </div>
-          {resultPerPage < count && (
-            <div className="paginationBox">
-              {/* <Pagination
-                activePage={currentPage}
-                itemsCountPerPage={resultPerPage}
-                totalItemsCount={productsCount}
-                onChange={setCurrentPageNo}
-                nextPageText="Next"
-                prevPageText="Prev"
-                firstPageText="1st"
-                lastPageText="Last"
-                itemClass="page-item"
-                linkClass="page-link"
-                activeClass="pageItemActive"
-                activeLinkClass="pageLinkActive"
-              /> */}
-            </div>
-          )}
+          {/* {resultPerPage < productsCount && (
+           
+          )} */}
+          {/* <div className="paginationBox">
+              <Stack spacing={2}>
+                <Pagination
+                  count={Math.ceil(productsCount / resultPerPage)}
+                  page={currentPage}
+                  onChange={(event, page) => setCurrentPageNo(page)}
+                  shape="rounded"
+                  variant='outlined'
+                />
+              </Stack>
+            </div> */}
+          <div className="paginationBox">
+            <Stack spacing={2} direction="row">
+              <Pagination
+                count={Math.ceil(productsCount / resultPerPage)}
+                page={currentPage}
+                onChange={(event, page) => setCurrentPageNo(page)}
+                shape="rounded"
+                variant="outlined"
+                color="primary" // Customize color
+                size="large" // Customize size
+                siblingCount={1} // Number of visible page links on either side of the current page
+                boundaryCount={2} // Number of boundary links at the start and end
+                showFirstButton // Show the "First" button
+                showLastButton // Show the "Last" button
+                renderItem={(item) => (
+                  <PaginationItem
+                    {...item}
+                    component={Link} // Customize the component used for each item (e.g., Link from react-router-dom)
+                    to={`/products?page=${item.page}`} // Example link based on page number
+                  />
+                )}
+              />
+            </Stack>
+          </div>
         </>
       )}
     </>

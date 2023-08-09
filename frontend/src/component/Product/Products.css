@@ -17,9 +17,11 @@
   }
   
   .paginationBox {
+    /* background-color: red; */
     display: flex;
     justify-content: center;
     margin: 6vmax;
+
   }
   
   .pagination {
@@ -90,7 +92,7 @@
   }
   
   .filterBox > fieldset {
-    border: 1px solid rgba(0, 0, 0, 0.329);
+    border: none !important;
   }
   
   @media screen and (max-width: 600px) {
