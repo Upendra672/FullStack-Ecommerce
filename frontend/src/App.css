@@ -22,3 +22,9 @@ input[type="number"] {
 .redColor {
   color: red !important;
 }
+.products {
+  align-items: baseline !important;
+}
+.container {
+  align-items: baseline !important;
+}
